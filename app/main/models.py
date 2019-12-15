@@ -4,6 +4,7 @@ from django.db import models
 
 
 class AccountManager(BaseUserManager):
+    # TODO: вероятно метод не рабочий, не создаются значения для прочих обязательных полей
     def _create_user(self, email, password, **extra_fields):
         if not email:
             raise ValueError('Email address must be provided')
@@ -30,23 +31,15 @@ class Account(AbstractUser):
     SEX_CHOICE = ((0, 'Мужской'), (1, 'Женский'))
 
     email = models.EmailField(unique=True, verbose_name='Электронная почта')
-    phone_number = models.CharField(unique=True, verbose_name='Номер телефона')
-    password = models.CharField(verbose_name='Пароль')
-    first_name = models.CharField(verbose_name='Имя')
-    last_name = models.CharField(verbose_name='Фамилия')
-    patronymic = models.CharField(blank=True, null=True, verbose_name='Отчество')
+    phone_number = models.CharField(unique=True, verbose_name='Номер телефона', max_length=100)
+    password = models.CharField(verbose_name='Пароль', max_length=100)
+    first_name = models.CharField(verbose_name='Имя', max_length=100)
+    last_name = models.CharField(verbose_name='Фамилия', max_length=100)
+    patronymic = models.CharField(blank=True, null=True, verbose_name='Отчество', max_length=100)
     sex = models.IntegerField(choices=SEX_CHOICE, default=0, verbose_name='Пол')
 
     class Meta:
         abstract = True
-
-
-class Specialization(models.Model):
-
-    name = models.CharField(verbose_name='Название специализации')
-
-    def __str__(self):
-        return f'{self.name}'
 
 
 class BaseSmartId(Account):
@@ -94,11 +87,11 @@ class BaseSmartId(Account):
     (217, 'Япония'))
 
     resident = models.IntegerField(choices=GOV_CHOICE, default=0, verbose_name='Страна резиденства')
-    inn = models.CharField(blank=True, null=True, verbose_name='ИНН', help_text='Только для резидентов РФ')
+    inn = models.CharField(blank=True, null=True, verbose_name='ИНН', help_text='Только для резидентов РФ', max_length=100)
     photo = models.ImageField(verbose_name='Фотография пользователя')
-    contacts = models.CharField(verbose_name='Контакты')
+    contacts = models.CharField(verbose_name='Контакты', max_length=100)
     passport_scan = models.ImageField(verbose_name='Скан паспорта')
-    specialization = models.ForeignKey(Specialization, on_delete=models.PROTECT, verbose_name='Специализация')
+
 
     class Meta:
         abstract = True

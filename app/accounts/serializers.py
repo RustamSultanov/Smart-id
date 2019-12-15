@@ -2,11 +2,22 @@ from rest_framework import serializers
 from . import models
 from django.utils.translation import gettext_lazy as _
 
-
-class RegisterAccountSerializer(serializers.ModelSerializer):
-    confirm_password = serializers.CharField()
+#TODO: отладоточные данные
+# {
+#     "email": "enotukit@gmail.com",
+#     "phone_number": "1",
+#     "first_name": "1",
+#     "last_name": "1",
+#     "patronymic": "1",
+#     "password": "1",
+#     "confirm_password": "1",
+#     "sex": 1
+# }
+class RegisterEmployeeSerializer(serializers.ModelSerializer):
+    confirm_password = serializers.CharField(read_only=True)
 
     def validate(self, data):
+        #TODO: поменять базу!!!
         try:
             models.SmartId.objects.get(phone_number=data.get('phone_number'))
             models.SmartId.objects.get(email=data.get('email'))
@@ -26,10 +37,11 @@ class RegisterAccountSerializer(serializers.ModelSerializer):
         model = models.Employee
         fields = (
         'email', 'phone_number', 'first_name', 'last_name', 'patronymic', 'password', 'confirm_password', 'sex')
+        read_only_fields = ('confirm_password',)
         extra_kwargs = {'confirm_password': {'read_only': True}}
 
 
-class RegisterSmartIdSerializer(RegisterAccountSerializer):
+class RegisterSmartIdSerializer(RegisterEmployeeSerializer):
     class Meta:
         model = models.SmartId
         fields = (
@@ -38,7 +50,7 @@ class RegisterSmartIdSerializer(RegisterAccountSerializer):
         extra_kwargs = {'confirm_password': {'read_only': True}}
 
 
-class RegisterBusinessSmartIdSerializer(RegisterAccountSerializer):
+class RegisterBusinessSmartIdSerializer(RegisterEmployeeSerializer):
     class Meta:
         model = models.SmartId
         fields = (

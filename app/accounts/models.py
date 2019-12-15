@@ -5,7 +5,7 @@ from main.models import BaseSmartId, Account
 
 class Specialization(models.Model):
 
-    name = models.CharField(verbose_name='Название специализации')
+    name = models.CharField(verbose_name='Название специализации', max_length=100)
 
     def __str__(self):
         return f'{self.name}'
@@ -29,6 +29,9 @@ class Employee(Account):
     def __str__(self):
         return f'{self.last_name} {self.first_name}'
 
+    class Meta:
+        verbose_name = 'employee'
+
 
 class SmartId(BaseSmartId):
     STATUS_CHOICE = ((0, 'Физическое лицо'), (1, 'Самозанятый'), (2, 'Официально работающий'))
@@ -40,6 +43,9 @@ class SmartId(BaseSmartId):
     def __str__(self):
         return f'{self.last_name} {self.first_name}'
 
+    class Meta:
+        verbose_name = 'smart_id'
+
 
 class BusinessSmartId(BaseSmartId):
     company = models.OneToOneField(Company, on_delete=models.PROTECT, verbose_name='Компания')
@@ -47,3 +53,6 @@ class BusinessSmartId(BaseSmartId):
 
     def __str__(self):
         return f'{self.last_name} {self.first_name}'
+
+    class Meta:
+        verbose_name = 'business_smart_id'

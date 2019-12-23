@@ -3,26 +3,25 @@ from . import models
 from django.utils.translation import gettext_lazy as _
 
 #TODO: отладоточные данные
-# {
-#     "email": "enotukit@gmail.com",
-#     "phone_number": "1",
-#     "first_name": "1",
-#     "last_name": "1",
-#     "patronymic": "1",
-#     "password": "1",
-#     "confirm_password": "1",
-#     "sex": 1
-# }
+"""{
+    "email": "enotukit@gmail.com",
+    "phone_number": "1",
+    "first_name": "1",
+    "last_name": "1",
+    "patronymic": "1",
+    "password": "1",
+    "confirm_password": "1",
+    "sex": 1
+}"""
 class RegisterEmployeeSerializer(serializers.ModelSerializer):
     confirm_password = serializers.CharField(read_only=True)
 
     def validate(self, data):
-        #TODO: поменять базу!!!
         try:
-            models.SmartId.objects.get(phone_number=data.get('phone_number'))
-            models.SmartId.objects.get(email=data.get('email'))
+            models.Employee.objects.get(phone_number=data.get('phone_number'))
+            models.Employee.objects.get(email=data.get('email'))
             raise serializers.ValidationError(_("Электронный адресс или номер телефона уже заняты"))
-        except models.SmartId.DoesNotExist:
+        except models.Employee.DoesNotExist:
             pass
 
         if not data.get('password') or not data.get('confirm_password'):

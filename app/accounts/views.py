@@ -6,9 +6,13 @@ from oauth2_provider.settings import oauth2_settings
 from braces.views import CsrfExemptMixin
 from oauth2_provider.views.mixins import OAuthLibMixin
 
+from django.views.generic.edit import FormView
+from django.conf import settings
+
 import json
 from . import models
 from . import serializers
+from . import forms
 
 from django.utils.decorators import method_decorator
 from django.http import HttpResponse
@@ -16,6 +20,37 @@ from django.views.generic import View
 from django.views.decorators.debug import sensitive_post_parameters
 from django.utils.translation import gettext_lazy as _
 from django.db import transaction
+
+
+class EmployeeRegistrationView(FormView):
+    form_class = forms.EmployeeRegistrationForm
+    success_url = settings.LOGIN_URL
+    template_name = 'accounts/form.html'
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+
+
+class SmartIdRegistrationView(FormView):
+    form_class = forms.EmployeeRegistrationForm
+    success_url = settings.LOGIN_URL
+    template_name = 'accounts/form.html'
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+
+
+class BusinessSmartIdRegistrationView(FormView):
+    form_class = forms.EmployeeRegistrationForm
+    success_url = settings.LOGIN_URL
+    template_name = 'accounts/form.html'
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+
 
 
 # TODO: Вынести повторяющийся код в миксины

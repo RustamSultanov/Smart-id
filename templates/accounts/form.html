@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+
+
+{% block content %}
+<header class="major">
+	<h1>Регистрация сотрудника</h1>
+</header>
+<!-- Form section -->
+<form name="registerForm" action="" method="post">
+	{% csrf_token %}
+	{{ form.company }}
+
+	<br>
+	<input class="btn" type="submit" value="Зарегистрировать"><br><br>   
+</form>
+{% endblock %} 

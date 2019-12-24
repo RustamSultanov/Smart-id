@@ -17,6 +17,7 @@ drf-yasg = "*"
 django-cors-middleware = "*"
 pillow = "*"
 django-braces = "*"
+requests = "*"
 
 [requires]
 python_version = "3.7"

@@ -1,8 +1,7 @@
 from django.contrib import admin
 
-from .models import Employee, Company, SmartId, BusinessSmartId, Specialization, Account
+from .models import Employee, Company, SmartId, BusinessSmartId, Specialization
 
-admin.site.register(Account)
 admin.site.register(Employee)
 admin.site.register(Company)
 admin.site.register(SmartId)

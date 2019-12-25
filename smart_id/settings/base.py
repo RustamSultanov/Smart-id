@@ -111,6 +111,9 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 LOGIN_URL = '/'
 
+# Пользовательская модель юзера
+AUTH_USER_MODEL = 'main.User'
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'oauth2_provider.contrib.rest_framework.OAuth2Authentication',

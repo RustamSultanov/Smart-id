@@ -9,24 +9,24 @@ class AccountRegistrationForm(forms.ModelForm):
                                            'class': 'form-control',
                                            'placeholder': 'Password'}))
 
-    class Meta:
-        model = models.User
-        fields = (
-            'email', 'phone_number', 'password', 'first_name', 'last_name', 'patronymic', 'sex', 'resident',
-            'inn', 'photo', 'contacts')
-        widgets = {'password': forms.PasswordInput({'class': 'form-control', 'placeholder': 'Password'})}
-
-    def clean(self):
-        cleaned_data = super().clean()
-        if cleaned_data['password'] != cleaned_data['confirm_password']:
-            raise forms.ValidationError(
-                "Пароли не совпадают!"
-            )
-
-    def save(self, commit=True):
-        self.instance.set_password(self.cleaned_data['password'])
-        result = self.instance.check_password(self.cleaned_data['password'])
-        return super().save(commit)
+    # class Meta:
+    #     model = models.User
+    #     fields = (
+    #         'email', 'phone_number', 'password', 'first_name', 'last_name', 'patronymic', 'sex', 'resident',
+    #         'inn', 'photo', 'contacts')
+    #     widgets = {'password': forms.PasswordInput({'class': 'form-control', 'placeholder': 'Password'})}
+    #
+    # def clean(self):
+    #     cleaned_data = super().clean()
+    #     if cleaned_data['password'] != cleaned_data['confirm_password']:
+    #         raise forms.ValidationError(
+    #             "Пароли не совпадают!"
+    #         )
+    #
+    # def save(self, commit=True):
+    #     self.instance.set_password(self.cleaned_data['password'])
+    #     result = self.instance.check_password(self.cleaned_data['password'])
+    #     return super().save(commit)
 
 
 class AccountAuthenticationForm(forms.ModelForm):

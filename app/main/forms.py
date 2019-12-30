@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
+from django.contrib.auth import authenticate
 
 User = get_user_model()
 
@@ -43,7 +44,7 @@ class UserChangeForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('email', 'password','first_name','last_name' , 'is_active', 'is_staff')
+        fields = ('email', 'password', 'is_active', 'is_staff')
 
     def clean_password(self):
         # Regardless of what the user provides, return the initial value.
@@ -52,11 +53,22 @@ class UserChangeForm(forms.ModelForm):
         return self.initial["password"]
 
 
-
-
 class LoginForm(AuthenticationForm):
     username = forms.CharField(widget=forms.EmailInput(
         attrs={'id': "email",
                'class': "validate"}))
     password = forms.CharField(
         widget=forms.PasswordInput(attrs={'class': "form-control"}))
+
+    def clean(self):
+        email = self.cleaned_data.get('username')
+        password = self.cleaned_data.get('password')
+
+        if email is not None and password:
+            self.user_cache = authenticate(self.request, email=email, password=password)
+            if self.user_cache is None:
+                raise self.get_invalid_login_error()
+            else:
+                self.confirm_login_allowed(self.user_cache)
+
+        return self.cleaned_data
